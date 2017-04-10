@@ -1,0 +1,200 @@
+﻿@model MvcAuth.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Create", "SetPassword")
+            }
+            ]
+        </dd>
+        <dt>External Logins:</dt>
+        <dd>
+            @Model.Logins.Count [
+            @Html.ActionLink("Manage", "ManageLogins") ]
+        </dd>
+        @*
+            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+             
+             See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+             
+             Uncomment the following block after you have set up two-factor authentication
+        *@
+        @*  
+            <dt>Phone Number:</dt>
+            <dd>
+                @(Model.PhoneNumber ?? "None")
+                @if (Model.PhoneNumber != null)
+                {
+                    <br />
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    }
+                }
+                else
+                {
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                }
+            </dd>
+        *@
+        <dt>Two-Factor Authentication:</dt>
+        <dd>
+            <p>
+                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication.
+            </p>
+            @*@if (Model.TwoFactor)
+                {
+                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
+                        </text>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
+                        </text>
+                    }
+                }*@
+        </dd>
+    </dl>
+</div>
+<style>
+
+form label,
+form input,
+form button {
+  border: 0;
+  margin-bottom: 3px;
+  display: block;
+  width: 100%;
+}
+form input {
+  height: 25px;
+  line-height: 25px;
+  background: #fff;
+  color: #000;
+  padding: 0 6px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+form button {
+  height: 30px;
+  line-height: 30px;
+  background: #e67e22;
+  color: #fff;
+  margin-top: 10px;
+  cursor: pointer;
+}
+form .error {
+  color: #ff0000;
+}
+
+.form2 {
+  padding: 20px;
+  background: black;
+  color: #fff;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.container2 {
+  width: 500px;
+  margin: 25px auto;
+}
+
+#message {
+    height: 100px;
+    line-height:100px;
+}
+</style>
+<div class="container2">
+    <h2>Send us a message</h2>
+    <form action="" name="messageUs" class="form2">
+
+        <label for="firstname">First Name</label>
+        <input type="text" name="firstname" id="firstname" placeholder="John" />
+
+        <label for="lastname">Last Name</label>
+        <input type="text" name="lastname" id="lastname" placeholder="Doe" />
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="john@doe.com" />
+
+        <label for="message">Message</label>
+        <input type="text" name="message" id="message" placeholder="Write your message" />
+
+        <button type="submit">Submit</button>
+
+    </form>
+</div>
+    
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+       <script>
+           $(document).ready(function ($) {
+               $("form[name='messageUs']").validate({
+                   // Specify validation rules
+                   rules: {
+                       // The key name on the left side is the name attribute
+                       // of an input field. Validation rules are defined
+                       // on the right side
+                       firstname: "required",
+                       lastname: "required",
+                       email: {
+                           required: true,
+                           // Specify that email should be validated
+                           // by the built-in "email" rule
+                           email: true
+                       },
+                       message: {
+                           required: true,
+                           minlength: 5
+                       }
+                   },
+                   // Specify validation error messages
+                   messages: {
+                       firstname: "Please enter your firstname",
+                       lastname: "Please enter your lastname",
+                       message: {
+                           required: "Please provide a message",
+                           minlength: "Your message must be at least 5 characters long"
+                       },
+                       email: "Please enter a valid email address"
+                   },
+                   // Make sure the form is submitted to the destination defined
+                   // in the "action" attribute of the form when valid
+                   submitHandler: function (form) {
+                       form.submit(alert("Submitted"));
+                   }
+               });
+           });
+       </script>
+      
