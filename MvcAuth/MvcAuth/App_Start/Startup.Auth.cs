@@ -57,7 +57,8 @@ namespace MvcAuth
             //app.UseFacebookAuthentication(
             //   appId: "163056214218113",
             //   appSecret: "ea0d27ee3088687bf5e53d08e2d90f6f");
-
+            
+            // GOOGLE AUTHENTICATION
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                ClientId = "427970291445-fcvn05kp0p6k8lu6cprgdodt5s55lp2d.apps.googleusercontent.com",
